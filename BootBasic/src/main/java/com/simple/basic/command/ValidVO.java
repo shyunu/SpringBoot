@@ -26,15 +26,15 @@ public class ValidVO {
     ...등
     */
 
-    @NotBlank(message = "이름은 필수입니다")
+    @NotBlank//(message = "이름은 필수입니다")
     private String name;
-    @NotNull(message = "급여는 필수입니다")
+    @NotNull//(message = "급여는 필수입니다")
     private Integer salary; //유효성 검사하는 필드는 wrapper 클래스로 작성(null을 가질 수 있음)
     @Pattern(regexp = "[0-9]{3}-[0-9]{4}-[0-9]{4}", message = "전화번호는 000-0000-0000형식입니다.")
     private String phone;
 
     @NotBlank
-    @Email(message = "이메일 형식이어야합니다") //공백은 통과시킵니다.
+    @Email//(message = "이메일 형식이어야합니다") //공백은 통과시킵니다.
     private String email;
 
 

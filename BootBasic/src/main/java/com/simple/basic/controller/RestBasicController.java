@@ -1,14 +1,15 @@
 package com.simple.basic.controller;
 
+import com.simple.basic.command.MemoVO;
 import com.simple.basic.command.TestVO;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.Valid;
+import java.util.*;
 
 @RestController //Controller + ResponseBody (컨트롤러에서 응답을 요청이 들어온 곳으로 바꿈) --> 합성어
 public class RestBasicController {
@@ -24,7 +25,7 @@ public class RestBasicController {
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //get방식 요청받기 : 일반컨트롤러에서 받는 형식고 똑같은 방법으로 가능함
+    //get방식 요청받기 : 일반컨트롤러에서 받는 형식과 똑같은 방법으로 가능함
     //http://localhost:8181/getData?num=1&name=홍길동
     //1번
 //    @GetMapping("/getData")
@@ -34,12 +35,12 @@ public class RestBasicController {
 //    }
 
     //2번
-    @GetMapping("/getData")
-    public String getData(@RequestParam("num") int num,
-                          @RequestParam("name") String name) {
-        System.out.println(num + ", " + name);
-        return "getData";
-    }
+//    @GetMapping("/getData")
+//    public String getData(@RequestParam("num") int num,
+//                          @RequestParam("name") String name) {
+//        System.out.println(num + ", " + name);
+//        return "getData";
+//    }
 
     //pathvariable방식
     //http://localhost:8181/getData2/1/홍길동
@@ -101,9 +102,13 @@ public class RestBasicController {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //응답문서 명확하게 작성하기 ResponseEntity<데이터타입>
+//    @CrossOrigin({"http://127.0.0.1:5500", "http://localhost:5500"})
 
+    @CrossOrigin("*") //모든 서버에 대한 요청을 승인함(위험할 수 있음)
     @PostMapping("/getEntity")
-    public ResponseEntity<TestVO> getEntity() {
+    public ResponseEntity<TestVO> getEntity(@RequestBody TestVO v) {
+
+        System.out.println("받은 데이터:" + v.toString());
         TestVO vo = new TestVO(1, "홍길동", 20, "서울시");
 
         //1st
@@ -114,9 +119,51 @@ public class RestBasicController {
         HttpHeaders header = new HttpHeaders();
         header.add("Authorization", "Bearer JSON WEB TOKEN~"); //키,값
         header.add("Content-Type", "application/json"); //produce와 같은 표현
-        header.add("Access-Control-Allow-Origin", "http://example.com");
+//        header.add("Access-Control-Allow-Origin", "http://example.com");
 
         ResponseEntity entity = new ResponseEntity(vo, header, HttpStatus.OK);
         return entity;
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+   /*
+    요청주소 : /api/v1/getData
+    메서드 : get
+    요청 파라미터 : sno(숫자), name(문자)
+    응답 파라미터 : MemoVO
+    헤더에 담을 내용 HttpStatus.OK
+    fetch API 사용해서 클라이언트에 요청 응답
+    */
+    @GetMapping("/api/v1/getData")
+    public ResponseEntity<MemoVO> getData3(@RequestParam("sno") int sno,
+                                           @RequestParam("name") String name) {
+
+        ResponseEntity entity = new ResponseEntity<MemoVO>(new MemoVO(1L, "홍길동", "1234", null, null),
+                                                           HttpStatus.OK);
+        return entity;
+    }
+
+    /*
+    요청주소 : /api/vi/getInfo
+    메서드 : post
+    요청 파라미터 : MemoVO타입
+    응답 파라미터 : List<MemoVO>타입
+    헤더에 담을 내용 HttpStatus.OK
+    fetch API 사용해서 클라이언트에 요청 응답
+    */
+
+    @PostMapping("/api/vi/getInfo")
+    public ResponseEntity<List<MemoVO>> getInfo(@RequestBody @Valid MemoVO vo,
+                                                BindingResult binding) {
+
+        if(binding.hasErrors()) {
+            System.out.println("유효성 검증에 실패함");
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        List<MemoVO> list = new ArrayList<>();
+        list.add(vo);
+        return new ResponseEntity<>(list, HttpStatus.OK);
+
     }
 }

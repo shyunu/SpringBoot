@@ -19,5 +19,4 @@ public class CategoryVO {
     private String categoryDetailNm;
     private int categoryParentLv;
     private int categoryDetailParentLv;
-
 }

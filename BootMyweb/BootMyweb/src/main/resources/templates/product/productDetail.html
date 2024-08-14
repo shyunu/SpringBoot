@@ -34,7 +34,7 @@
 
                                                     <td colspan="5">
                                                         <div>수정이 불가능한 옵션입니다(상품관리자에게 문의하세요)</div>
-                                                        대분류 > 중분류 > 소분류
+                                                        [[${vo.categoryNav}]]
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -181,8 +181,9 @@
 
     var msg = '[[${msg}]]';
 
-    //사용자가 back버튼으로 돌아왔을 때 history.state가 변경되었으면 메시지가 출력되지 않음.
-    if(msg != 'null' && history.state == null ) { //msg가 null 이 아니라는 것은 msg값이 있다는 뜻
+
+    //사용자가 back버튼으로 돌아왔을 때 history.state가 변경되었으면, 메시지가 출력되지 않음.
+    if(msg != 'null' && history.state == null  ) { //msg가 null 이 아니라는 것은 msg값이 있다는 뜻
         var m = JSON.parse(msg);
         alert(m);
         history.replaceState('back', '', null); //현재 브라우저 (추가할데이터, 제목, url)

@@ -123,12 +123,8 @@ function getCategory_List(e) {
 	//카테고리 key값은 그룹번호 + 카테고리ID로 만들어진다
 	//클릭한 대상의 이 값을 인풋태그[name=prodCategory]에 value에 값을 지정
 	//////////////////////////////////////////////////
-	$(e.target).click(function() {
-		var group_id = this.data("set").group_id;
-		var category_id = this.data("set").category_id;
-		$("input[name='prod_category']").val(group_id + category_id);
-		console.log(group_id + ", " + category_id);
-	})
+	$(e.target).category_set();
+
 }
 //카테고리세팅
 $.fn.category_set = function() {

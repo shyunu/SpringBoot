@@ -35,7 +35,7 @@
 									<span class="search_th">판매가 정렬</span>
 									<select class="" name="searchPrice">
 										<option value="none" th:selected="${pageVO.cri.searchPrice == 'none'}">정렬방식</option>
-										<option value="asc" th:selected="${pageVO.cri.searchPrice == 'asc'}">낮은순</option>
+										<option value="asc"  th:selected="${pageVO.cri.searchPrice == 'asc'}">낮은순</option>
 										<option value="desc" th:selected="${pageVO.cri.searchPrice == 'desc'}">높은순</option>
 									</select>
 								</div>
@@ -44,8 +44,8 @@
 								<div class="pdt15"></div>
 								<div>
 									<span class="search_th">판매마감일</span>
-									<input type="text" class="datepicker" name="startDate" th:value="${pageVO.cri.startDate}" readonly placeholder="날짜선택" />
-									<input type="text" class="datepicker" name="endDate" th:value="${pageVO.cri.endDate}" readonly placeholder="날짜선택" />
+									<input type="text" class="datepicker" name="startDate" th:value="${pageVO.cri.startDate}" readonly placeholder="날짜선택" /> -
+									<input type="text" class="datepicker" name="endDate"   th:value="${pageVO.cri.endDate}"	  readonly placeholder="날짜선택" />
 								</div>
 								<!--
                                 <div>
@@ -101,7 +101,7 @@
 														<a href="#" class="normal_btn modalOn">이미지수정</a>
 													</td>
 													<td>[[${vo.prodId}]]</td>
-													<td>.....</td>
+													<td>[[${vo.categoryNav}]] ( [[${vo.prodCategory}]] ) </td>
 
 													<td>
 														<a title="상세보기(클릭)" th:href="@{/product/productDetail(prodId=${vo.prodId }) }">
@@ -124,8 +124,9 @@
 											</table>
 
 
+											<!-- 페이지네이션 -->
 											<div class="page">
-												<th:block th:replace="~{./include/page :: page( ${pageVO} )}"></th:block>
+												<th:block th:replace="~{./include/page :: page( ${pageVO} ) }"></th:block>
 											</div>
 										</li>
 
@@ -220,7 +221,6 @@
 	//검색버튼 submit기능
 	var searchBtn = document.getElementById("searchBtn");
 	searchBtn.onclick = function() {
-
 		event.preventDefault(); //a링크 이벤트 중단
 		document.searchForm.submit(); //폼태그 서브밋
 	}
@@ -228,14 +228,14 @@
 	//100개씩 보기
 	var changeAmount = document.getElementById("changeAmount");
 	changeAmount.onchange = function() {
-		//사용자가 선택한 값을 받아서 form태그의 amount값을 변경하고 폼을 서브밋한다.
-//		console.log(changeAmount);
+		//사용자가 선택한 값을 받아서, form태그의 amount값을 변경하고, 폼을 서브밋
+		//console.log(changeAmount);
+		//console.log(this);
+		//console.log(event.target);
 		var amount = event.target.value;
 		document.searchForm.page.value = 1;
-		document.searchForm.amount.value = amount; //document.폼이름.input이름.값 = 사용자의 선택값
+		document.searchForm.amount.value = amount; //document.폼이름.인풋이름.값 = 사용자의 선택값
 		document.searchForm.submit();
-
-
 	}
 
 

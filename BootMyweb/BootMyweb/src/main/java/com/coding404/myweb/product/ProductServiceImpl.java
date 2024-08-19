@@ -36,22 +36,18 @@ public class ProductServiceImpl implements ProductService {
         return filepath;
     }
 
+
     @Override
-    @Transactional(rollbackFor = Exception.class) //이 메서드 안에서 예외가 나면 ROLLBACK 시킨다.
-    //단, try~catch 문장으로 예외처리가 해결되면 transaction처리가 되지 않는다.
+    @Transactional(rollbackFor = Exception.class) //이 메서드 안에서 예외가 나면 ROLLBACK시킴
+    //단 try ~ catch문장으로 예외처리가 해결 되면, 트랜잭션 처리가 되지 않습니다.
     public int productInsert(ProductVO vo, List<MultipartFile> files) {
 
-        //파일업로드 처리..
-        //파일 경로 insert
-        //상품데이터 insert
-
-        //1st : 상품 insert
-        int result = productMapper.productInsert(vo);
-
-        //2nd : 파일 업로드
+        //1st - 상품 인서트
+        int result = productMapper.productInsert(vo); //상품 insert
+        //2nd - 파일업로드
         for(MultipartFile file : files) {
             String originName = file.getOriginalFilename(); //파일명
-            String filename = originName.substring(originName.lastIndexOf("\\") + 1);
+            String filename = originName.substring(  originName.lastIndexOf("\\") + 1);
             String filepath = makeFolder(); //폴더명
             String uuid = UUID.randomUUID().toString();
             String savePath = uploadPath + "/" + filepath + "/" + uuid + "_" + filename; //업로드경로
@@ -66,15 +62,16 @@ public class ProductServiceImpl implements ProductService {
                 e.printStackTrace();
             }
 
-            //3nd : 파일 insert
+            //3nd - 파일 인서트
             productMapper.uploadFile(
                     ProductUploadVO.builder()
                             .filename(filename)
                             .filepath(filepath)
                             .uuid(uuid)
-                            .prodWriter(vo.getProdWriter())
+                            .prodWriter( vo.getProdWriter() )
                             .build()
             );
+
         }
 
         return result;
@@ -113,5 +110,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ArrayList<CategoryVO> getCategoryChild(CategoryVO vo) {
         return productMapper.getCategoryChild(vo);
+    }
+
+    @Override
+    public ArrayList<ProductUploadVO> getImgs(int prodId) {
+        return productMapper.getImgs(prodId);
     }
 }

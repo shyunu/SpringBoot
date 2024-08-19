@@ -7,26 +7,27 @@
 
     <insert id="productInsert" parameterType="ProductVO">
         INSERT INTO PRODUCT(PROD_ENDDATE
-                            ,PROD_CATEGORY
-                            ,PROD_WRITER
-                            ,PROD_NAME
-                            ,PROD_PRICE
-                            ,PROD_COUNT
-                            ,PROD_DISCOUNT
-                            ,PROD_PURCHASE_YN
-                            ,PROD_CONTENT
-                            ,PROD_COMMENT
+        ,PROD_CATEGORY
+        ,PROD_WRITER
+        ,PROD_NAME
+        ,PROD_PRICE
+        ,PROD_COUNT
+        ,PROD_DISCOUNT
+        ,PROD_PURCHASE_YN
+        ,PROD_CONTENT
+        ,PROD_COMMENT
         )
-        VALUES (#{prodEnddate}
-                ,#{prodCategory}
-                ,#{prodWriter}
-                ,#{prodName}
-                ,#{prodPrice}
-                ,#{prodCount}
-                ,#{prodDiscount}
-                ,#{prodPurchaseYn}
-                ,#{prodContent}
-                ,#{prodComment}
+        VALUES (
+        #{prodEnddate}
+        ,#{prodCategory}
+        ,#{prodWriter}
+        ,#{prodName}
+        ,#{prodPrice}
+        ,#{prodCount}
+        ,#{prodDiscount}
+        ,#{prodPurchaseYn}
+        ,#{prodContent}
+        ,#{prodComment}
         )
     </insert>
 
@@ -155,33 +156,42 @@
         AND CATEGORY_DETAIL_PARENT_LV = #{categoryDetailLv}
     </select>
 
-    <!-- 파일을 insert한다 (상품 등록과 함께 등록된다) -->
+    <!-- 파일을 인서트 합니다 (상품 등록과 함께 등록됩니다.) -->
     <!--
-        파일 insert전에 product테이블의 prod_id값을 조회하여 가지고 와서 fk로 저장해야한다.
-        selectKey태그는 특정 테이블을 조회해서, 조회한 결과를 vo에 대신 담아준다.
+        파일 인서트 전에 product테이블의 prod_id값을 조회하여 가지고 와서 fk로 저장해야 합니다.
+        selectKey태그는 특정 테이블을 조회해서, 조회한 결과를 vo에 대신 담아 줍니다.
+
+        order속성은 sql문 실행 (이후, 이전) 결정 하는 속성
+        resultType속성은 실행될 sql의 반환타입
+        keyProperty속성은 vo의 어느 컬럼에 저장 할 것인가
     -->
     <insert id="uploadFile" parameterType="ProductUploadVO">
-        <!--  order:sql문 실행 (이전/이후)를 결정하는 속성
-              resultType속성은 실행될 sql의 반환 타입
-              keyProperty속성은 vo의 어느 컬럼에 저장할 것인가-->
         <selectKey order="BEFORE" resultType="int" keyProperty="prodId">
             SELECT MAX(PROD_ID) FROM PRODUCT WHERE PROD_WRITER = #{prodWriter}
         </selectKey>
+
         INSERT INTO PRODUCT_UPLOAD (
-            FILENAME,
-            FILEPATH,
-            UUID,
-            PROD_ID,
-            PROD_WRITER
+        FILENAME,
+        FILEPATH,
+        UUID,
+        PROD_ID,
+        PROD_WRITER
         )
         VALUES (
-            #{filename},
-            #{filepath},
-            #{uuid},
-            #{prodId},
-            #{prodWriter}
+        #{filename},
+        #{filepath},
+        #{uuid},
+        #{prodId},
+        #{prodWriter}
         )
     </insert>
+
+    <select id="getImgs" resultType="ProductUploadVO">
+        SELECT *
+        FROM PRODUCT_UPLOAD
+        WHERE PROD_ID = #{prodId}
+    </select>
+
 
 
 

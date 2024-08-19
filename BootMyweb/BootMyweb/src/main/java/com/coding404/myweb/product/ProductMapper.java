@@ -27,6 +27,7 @@ public interface ProductMapper {
     //파일 데이터 insert
     public void uploadFile(ProductUploadVO vo);
 
-
+    //파일데이터 조회
+    public ArrayList<ProductUploadVO> getImgs(int prodId);
 
 }

@@ -1,5 +1,6 @@
 package com.coding404.myweb.controller;
 
+import com.coding404.myweb.util.Criteria;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,9 +10,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TopicController {
 
     @GetMapping("/topicDetail")
-    public String topicDetail() {
+    public String topicDetail(Criteria cri) {
+
         return "topic/topicDetail";
     }
+
+    //--- 등록요청
+    @GetMapping("/registForm")
+    public String registForm() {
+
+
+
+
+        return "redirect:/topic/topicListAll";
+    }
+
 
     @GetMapping("/topicListAll")
     public String topicListAll() {

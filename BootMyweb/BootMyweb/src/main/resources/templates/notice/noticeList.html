@@ -24,7 +24,7 @@
 					</div>
 					<div class="page_title">관리자검색</div>
 					
-					<form name="###########" action="############" method="get" >
+					<form name="searchForm" action="noticeList" method="get" >
 					<div class="search_block flfull">
 
 						<div class="fl">
@@ -61,7 +61,7 @@
 
 						<div class="fr">
 							<div class="search_btn_area">
-								<a href="#" class="normal_btn purplebtn">검색</a>
+								<a href="#" class="normal_btn purplebtn" id="searchBtn">검색</a>
 								<a href="#" class="normal_btn purplebtn02">등록</a>
 							</div>
 						</div>
@@ -202,4 +202,14 @@
 		</div>
 	</div><!-- end wrap -->
 	</th:block>
+
+<script th:inline="javascript">
+	//검색버튼 submit기능
+	var searchBtn = document.getElementById("searchBtn");
+	searchBtn.onClick = function() {
+		event.preventDefault();
+		document,searchForm.submit();
+	}
+
+</script>
 </html>

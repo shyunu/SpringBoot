@@ -41,6 +41,10 @@ dependencies {
 	implementation 'com.mysql:mysql-connector-j:8.0.33' //mysql connector
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 
+	// web socket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+
 }
 
 tasks.named('test') {

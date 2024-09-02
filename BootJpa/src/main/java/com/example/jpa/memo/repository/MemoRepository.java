@@ -7,13 +7,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 public interface MemoRepository extends JpaRepository<Memo, Long>, //엔티티타입, ID에 대한 타입
-        MemoCustomRepository { //커스텀레포지토리
+                                        MemoCustomRepository,
+                                        QuerydslPredicateExecutor<Memo> { //커스텀레포지토리
+
     //JpaRepository로 부터, 몇개의 추상메서드를 자동으로 상속받게 됩니다.
 
     //쿼리메서드
@@ -95,10 +98,10 @@ public interface MemoRepository extends JpaRepository<Memo, Long>, //엔티티�
 
 
     @Query(value = "select new com.example.jpa.entity.MemberMemoDTO(x.id, x.name, x.signDate, m.mno, m.writer, m.text) " +
-            "from Memo m left join m.member x where m.writer like %:writer%"
-            ,countQuery = "select count(m) from Memo m left join m.member x where m.writer like %:writer%"
+            "from Memo m left join m.member x where m.text like %:text%"
+            ,countQuery = "select count(m) from Memo m left join m.member x where m.text like %:text%"
     )
-    Page<MemberMemoDTO> joinPage(@Param("writer") String text, Pageable pageable);
+    Page<MemberMemoDTO> joinPage(@Param("text") String text, Pageable pageable);
 
 
 
